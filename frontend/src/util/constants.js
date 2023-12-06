@@ -1,0 +1,26 @@
+const CONNECTED_EVENT = "connected";
+const DISCONNECT_EVENT = "disconnect";
+const JOIN_CHANNEL_EVENT = "joinChat";
+const NEW_CHANNEL_EVENT = "newChat";
+const TYPING_EVENT = "typing";
+const STOP_TYPING_EVENT = "stopTyping";
+const MESSAGE_RECEIVED_EVENT = "messageReceived";
+const LEAVE_CHANNEL_EVENT = "leaveChat";
+const DELETE_CHAT_EVENT = "deleteChat";
+const REMOVE_MEMBER_EVENT = "removedmemberFromChat";
+const UPDATE_GROUP_DETAIL_EVENT = "updateGroupName";
+const SOCKET_ERROR_EVENT = "socketError";
+export const chatEnum = {
+  CONNECTED_EVENT,
+  DISCONNECT_EVENT,
+  JOIN_CHANNEL_EVENT,
+  NEW_CHANNEL_EVENT,
+  TYPING_EVENT,
+  STOP_TYPING_EVENT,
+  MESSAGE_RECEIVED_EVENT,
+  LEAVE_CHANNEL_EVENT,
+  DELETE_CHAT_EVENT,
+  REMOVE_MEMBER_EVENT,
+  UPDATE_GROUP_DETAIL_EVENT,
+  SOCKET_ERROR_EVENT,
+};
