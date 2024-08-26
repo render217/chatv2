@@ -15,7 +15,7 @@ export const requestHandler = async ({ api, setLoading, onSuccess, onError }) =>
       // show some toast
     }
   } catch (error) {
-    console.log("ERROR (req.): ", error);
+    // console.log("ERROR (req.): ", error);
     onError(error?.response?.data?.message);
   } finally {
     setLoading && setLoading(false);

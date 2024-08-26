@@ -51,14 +51,11 @@ exports.loginUser = async (req, res) => {
   }
   const foundUser = await User.findOne({ email });
   if (!foundUser) {
-    throw new ApiError(400, 'Invalid email or password. aka(no user found)');
+    throw new ApiError(400, 'Invalid email or password.');
   }
   const isValidPassword = verifyPassword(password, foundUser.password);
   if (!isValidPassword) {
-    throw new ApiError(
-      400,
-      'Invalid email or password. aka(password incorrect)'
-    );
+    throw new ApiError(400, 'Invalid email or password.');
   }
 
   const payload = {

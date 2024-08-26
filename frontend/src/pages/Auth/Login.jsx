@@ -35,9 +35,9 @@ export const Login = () => {
         });
 
         // save token and user to cookie
-        Cookies.set("token", payload.token);
+        Cookies.set("chat_token", payload.token);
         Cookies.set(
-          "user",
+          "chat_user",
           JSON.stringify({
             _id: payload.user._id,
             email: payload.user.email,
@@ -48,7 +48,9 @@ export const Login = () => {
         setIsAuthenticated(true);
         navigate("/", { replace: true });
       },
-      onError: (error) => {},
+      onError: (error) => {
+        alert("Invalid email or password");
+      },
     });
   };
 

@@ -57,8 +57,8 @@ export function ChannelDetail() {
       api: async () => await api.deleteGroupChat(selectedChannel?._id),
       setLoading: setLoading,
       onSuccess: (payload) => {
-        console.log("Channel Deleted: ");
-        console.log({ payload });
+        // console.log("Channel Deleted: ");
+        // console.log({ payload });
         alert("Successfully deleted");
         setChannels((prev) => [...prev.filter((p) => p?._id !== payload?._id)]);
         setSelectedChannel(null);

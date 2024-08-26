@@ -29,8 +29,8 @@ export default function AddChannelMember() {
       api: async () => api.addNewParticipantsInGroupChat(selectedChannel?._id, { participants }),
       setLoading: setSubmitting,
       onSuccess: (payload) => {
-        console.log("Participant Added: ");
-        console.log({ payload });
+        // console.log("Participant Added: ");
+        // console.log({ payload });
         setSelectedChannel(payload);
         alert("Successfully added");
         closeModal();

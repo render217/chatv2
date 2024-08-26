@@ -64,8 +64,8 @@ export function ChannelMemberList({ participants, admin, isAdmin }) {
       api: async () => await api.joinGroupChat(selectedChannel?._id),
       setLoading,
       onSuccess: (payload) => {
-        console.log("Channel Joined: ");
-        console.log({ payload });
+        // console.log("Channel Joined: ");
+        // console.log({ payload });
         setSelectedChannel(payload);
       },
       onError: (errMsg) => {

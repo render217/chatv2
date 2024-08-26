@@ -24,7 +24,7 @@ export default function AddUserChat() {
       api: async () => await api.getOrCreateOneToOneChat(selectedUser?._id),
       setLoading: setSubmitting,
       onSuccess: (payload) => {
-        console.log("Add ONE-TO-ONE chat: ");
+        // console.log("Add ONE-TO-ONE chat: ");
         // check if the one to one already exists;
         if (payload.alreadyExists) {
           setSelectedChannel(payload.chat);

@@ -31,8 +31,8 @@ export default function AddChannel() {
       setLoading: setSubmitting,
       onSuccess: (payload) => {
         // console.log(payload);
-        console.log("Channel Added");
-        console.log({ newChanneL: payload });
+        // console.log("Channel Added");
+        // console.log({ newChanneL: payload });
         setChannels((prev) => [payload, ...prev]);
         alert("Successfully created Channel");
         closeModal();

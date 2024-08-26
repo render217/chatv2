@@ -22,6 +22,7 @@ export const Register = () => {
   const handleRegisterForm = async (e) => {
     e.preventDefault();
     if (!username || !email || !password) {
+      alert("All fields are required");
       return;
     }
     await requestHandler({
@@ -31,7 +32,9 @@ export const Register = () => {
         alert(message);
         navigate("/login", { replace: true });
       },
-      onError: (error) => {},
+      onError: (error) => {
+        alert("Something went wrong. try again");
+      },
     });
   };
   return (

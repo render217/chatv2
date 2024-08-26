@@ -44,29 +44,38 @@ export default function ChatProvider({ children }) {
   const closeChannel = useUIStore((state) => state.closeChannel);
 
   const onConnect = (connectionId) => {
-    console.log("socket connected: userId->", connectionId);
+    // console.log("socket connected: userId->", connectionId);
     setIsConnected(true);
   };
 
   const onDisconnect = () => {
-    console.log("socket disconnected");
+    // console.log("socket disconnected");
 
     setIsConnected(false);
   };
 
   const onMessageReceived = (newMessage) => {
-    if (selectedChannel?._id === newMessage?.chat) {
+    if (selectedChannel?._id?.toString() === newMessage?.chat?.toString()) {
       setMessages((prev) => [...prev, newMessage]);
     }
   };
 
+  const onDeleteMessage = (message) => {
+    // console.log("DELETE_MESSAGE_EVENT: ", message);
+    if (selectedChannel?._id?.toString() === message?.chat?.toString()) {
+      setMessages((prev) => [
+        ...prev.filter((m) => m?._id?.toString() !== message?._id?.toString()),
+      ]);
+    }
+  };
+
   const onNewChannel = (newChannel) => {
-    console.log("NEW_CHANNEL_EVENT:", newChannel);
+    // console.log("NEW_CHANNEL_EVENT:", newChannel);
     setChannels((prev) => [newChannel, ...prev]);
   };
 
   const onUpdateChannel = (updatedChannel) => {
-    console.log("UPDATE_CHANNEL_EVENT:", updatedChannel);
+    // console.log("UPDATE_CHANNEL_EVENT:", updatedChannel);
     // update the channels
     setChannels((prev) => {
       return prev.map((c) => (c._id === updatedChannel?._id ? updatedChannel : c));
@@ -78,11 +87,11 @@ export default function ChatProvider({ children }) {
   };
 
   const onLeaveChannel = (updatedChannel) => {
-    console.log("LEAVE_CHANNEL_EVENT", updatedChannel);
+    // console.log("LEAVE_CHANNEL_EVENT", updatedChannel);
   };
 
   const onDeleteChannel = (channel) => {
-    console.log("DELETE CHANNEL EVENT: ", channel);
+    // console.log("DELETE CHANNEL EVENT: ", channel);
     if (selectedChannel?._id === channel?._id) {
       setSelectedChannel(null);
       closeChannel();
@@ -91,7 +100,7 @@ export default function ChatProvider({ children }) {
   };
 
   const onBeingRemoved = (channel) => {
-    console.log("REMOVE_MEMBER_EVENT: ", channel);
+    // console.log("REMOVE_MEMBER_EVENT: ", channel);
     if (selectedChannel?._id === channel._id) {
       setSelectedChannel(null);
       setMessages([]);
@@ -120,6 +129,8 @@ export default function ChatProvider({ children }) {
     socket.on(chatEnum.DELETE_CHAT_EVENT, onDeleteChannel);
 
     socket.on(chatEnum.REMOVE_MEMBER_EVENT, onBeingRemoved);
+
+    socket.on(chatEnum.DELETE_MESSAGE_EVENT, onDeleteMessage);
     //
     return () => {
       //

@@ -20,6 +20,9 @@ const LEAVE_CHANNEL_EVENT = "leaveChat";
 // on new message receivied
 const MESSAGE_RECEIVED_EVENT = "messageReceived";
 
+// on delete Message
+const DELETE_MESSAGE_EVENT = "deleteMessage";
+
 // delete group | one-to-one chat
 const DELETE_CHAT_EVENT = "deleteChat";
 
@@ -39,6 +42,7 @@ export const chatEnum = {
   MESSAGE_RECEIVED_EVENT,
   LEAVE_CHANNEL_EVENT,
   DELETE_CHAT_EVENT,
+  DELETE_MESSAGE_EVENT,
   REMOVE_MEMBER_EVENT,
   UPDATE_GROUP_EVENT,
   SOCKET_ERROR_EVENT,

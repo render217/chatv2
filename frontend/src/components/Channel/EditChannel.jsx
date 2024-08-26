@@ -49,8 +49,8 @@ export default function EditChannel() {
       api: async () => await api.updateGroupChat(selectedChannel?._id, { ...formData }),
       setLoading: setSubmitting,
       onSuccess: (payload) => {
-        console.log("Channel Updated: ");
-        console.log({ payload });
+        // console.log("Channel Updated: ");
+        // console.log({ payload });
         setSelectedChannel(payload);
         alert("Successfully Updated Channel");
 

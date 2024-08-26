@@ -31,6 +31,9 @@ exports.ChatEventEnum = Object.freeze({
   // when  group | one-to-one chat
   DELETE_CHAT_EVENT: 'deleteChat',
 
+  // when user delete message;
+  DELETE_MESSAGE_EVENT: 'deleteMessage',
+
   // when new message is received
   MESSAGE_RECEIVED_EVENT: 'messageReceived',
 

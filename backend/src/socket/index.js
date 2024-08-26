@@ -10,9 +10,10 @@ const { ChatEventEnum, AvailableChatEvents } = require('../utils/constants');
  */
 const inializeSocketIO = (io) => {
   return io.on('connection', async (socket) => {
-    // console.log('connection', socket.id);
+    console.log('connection', socket.id);
     try {
       let token = socket.handshake.auth?.token;
+      console.log({ socketToken: token });
       if (!token) {
         throw new ApiError(401, 'Un-authorized handshake....(token missing)');
       }
@@ -27,7 +28,7 @@ const inializeSocketIO = (io) => {
       socket.user = user;
 
       socket.join(user._id.toString()); // just like socket.id
-      socket.emit(ChatEventEnum.CONNECTED_EVENT, user.id.toString());
+      socket.emit(ChatEventEnum.CONNECTED_EVENT, user._id.toString());
       console.log('User connected 🗼.', user._id.toString());
 
       // COMMON EVENTS that need to be mounted on initialization
@@ -77,7 +78,7 @@ const emitSocketEvent = (req, roomId, event, payload) => {
   console.log({
     receiverId: roomId,
     event: event,
-    // payload: payload,
+    payload: payload,
   });
 
   req.app.get('io').in(roomId).emit(event, payload);

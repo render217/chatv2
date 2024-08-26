@@ -146,6 +146,17 @@ const deleteMessage = async (req, res) => {
 
   console.log('messageToBeDeleted: ', messageTobeDeleted);
 
+  existingChat.participants.forEach((participantId) => {
+    if (participantId.toString() === req.user._id.toString()) return;
+
+    emitSocketEvent(
+      req,
+      participantId.toString(),
+      ChatEventEnum.DELETE_MESSAGE_EVENT,
+      messageTobeDeleted
+    );
+  });
+
   const payload = messageTobeDeleted;
   res
     .status(200)

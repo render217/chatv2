@@ -35,8 +35,8 @@ export function ChannelMemberItem({ participant, selectedParticipant, setSelecte
         await api.removeParticipantFromGroupChat(selectedChannel?._id, participant._id),
       setLoading,
       onSuccess: (payload) => {
-        console.log("Participant Removed:");
-        console.log({ payload });
+        // console.log("Participant Removed:");
+        // console.log({ payload });
         setSelectedChannel(payload);
       },
       onError: (errMsg) => {

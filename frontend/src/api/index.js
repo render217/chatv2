@@ -3,15 +3,16 @@ import Cookies from "js-cookie";
 // const client = axios.create({
 //   baseURL: "http://localhost:3500/api",
 // });
+const BASEURL = import.meta.env.VITE_BACKEND_URI;
 let http = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: BASEURL,
   withCredentials: true,
 });
 
 // Add a request interceptor
 http.interceptors.request.use(
   function (config) {
-    const token = Cookies.get("token") ?? "";
+    const token = Cookies.get("chat_token") ?? "";
 
     config.headers = {
       Authorization: `Bearer ${token}`,

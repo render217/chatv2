@@ -23,7 +23,7 @@ export function ChatItem({ message }) {
     ? message.sender.username.charAt(0).toUpperCase() + message.sender.username.substring(1)
     : null;
 
-  const isUser = user._id.toString() === message.sender._id.toString();
+  const isUser = user?._id.toString() === message?.sender?._id.toString();
 
   const handleDeleteMessage = async () => {
     await requestHandler({
@@ -49,7 +49,7 @@ export function ChatItem({ message }) {
             className="ml-1 rounded-md   bg-clrSmokyBlack px-3 py-2  text-sm hover:cursor-pointer">
             {shortName}
           </div>
-          {showDropDown && (
+          {showDropDown && isUser && (
             <div className="absolute bottom-14 ">
               <FontAwesomeIcon
                 onClick={handleDeleteMessage}

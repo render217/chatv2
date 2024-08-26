@@ -42,7 +42,9 @@ app.get('/api', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/chat', chatRoutes);
-
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Chat_Api ok.' });
+});
 // inialize our socket io instance
 inializeSocketIO(io);
 

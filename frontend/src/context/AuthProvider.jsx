@@ -52,12 +52,12 @@ export default function AuthProvider({ children }) {
   const logout = () => {
     setUser(INITIAL_USER);
     setIsAuthenticated(false);
-    Cookies.remove("token");
+    Cookies.remove("chat_token");
   };
 
   useEffect(() => {
-    const _token = Cookies.get("token");
-    const _user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
+    const _token = Cookies.get("chat_token");
+    const _user = Cookies.get("chat_user") ? JSON.parse(Cookies.get("chat_user")) : null;
 
     if (_token && _user) {
       setUser(_user);
