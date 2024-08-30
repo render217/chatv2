@@ -9,6 +9,7 @@ import { requestHandler } from "../../util";
 // import { useChat } from "../../context/ChatProvider";
 // import useChannelStore from "../../store/useChannelStore";
 import { useChat } from "../../context/ChatProvider";
+import { LoaderCircle } from "lucide-react";
 const TAB_OPTIONS = [
   { id: "all", label: "All" },
   { id: "single", label: "Single" },
@@ -94,7 +95,9 @@ export function ChannelSearch() {
       </div>
       <div>
         {loading ? (
-          <p className="my-10 text-center text-xs">Searching...</p>
+          <div className="my-10 text-center text-xs">
+            <LoaderCircle className="mx-auto animate-spin" />
+          </div>
         ) : (
           <ChannelSearchResult results={getSearchedResult()} />
         )}

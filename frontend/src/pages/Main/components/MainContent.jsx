@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 
+import { LoaderCircle, MessageSquare } from "lucide-react";
 import { ChatList } from "../../../components";
 
 export const MainContent = ({ selectedChannel, messages, loading }) => {
@@ -16,7 +17,7 @@ export const MainContent = ({ selectedChannel, messages, loading }) => {
   if (loading) {
     return (
       <div className="grid h-full w-full place-content-center">
-        <p>loading</p>
+        <LoaderCircle className="animate-spin" />
       </div>
     );
   }
@@ -26,7 +27,10 @@ export const MainContent = ({ selectedChannel, messages, loading }) => {
   if (messages.length === 0) {
     content = (
       <div className="grid h-full w-full place-content-center">
-        <p>No Message yet</p>
+        <div className="flex flex-col items-center text-clrGunsmoke">
+          <MessageSquare className="h-20 w-20" />
+          <p>No Message yet</p>
+        </div>
       </div>
     );
   }

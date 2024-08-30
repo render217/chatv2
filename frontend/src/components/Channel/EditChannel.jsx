@@ -9,6 +9,8 @@ import { ChannelForm } from "./ChannelForm";
 import { ChannelMemberForm } from "./ChannelMemberForm";
 import useChannelStore from "../../store/useChannelStore";
 import { useChat } from "../../context/ChatProvider";
+import { toast } from "react-toastify";
+import { LoaderCircle } from "lucide-react";
 
 export default function EditChannel() {
   const [submitting, setSubmitting] = useState(false);
@@ -22,6 +24,8 @@ export default function EditChannel() {
     name: selectedChannel?.chatName,
     description: selectedChannel?.chatDescription,
   });
+
+  const isValid = formData.name !== "" && formData.description !== "";
 
   const handleDeleteChannel = async () => {
     requestHandler({
@@ -41,7 +45,8 @@ export default function EditChannel() {
   };
   const handleEditChannelSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.description) {
+    if (!isValid) {
+      toast.error("Please fill all fields");
       return;
     }
 
@@ -52,12 +57,15 @@ export default function EditChannel() {
         // console.log("Channel Updated: ");
         // console.log({ payload });
         setSelectedChannel(payload);
-        alert("Successfully Updated Channel");
+        toast.success("Successfully Updated Channel");
 
         closeModal();
       },
       onError: (errMsg) => {
         // console.log(errMsg);
+        if (errMsg) {
+          toast.error(errMsg);
+        }
       },
     });
   };
@@ -71,29 +79,26 @@ export default function EditChannel() {
             onClick={(e) => e.stopPropagation()}>
             <form onSubmit={handleEditChannelSubmit} className="w-full">
               <ChannelForm type={"Edit"} data={formData} setData={setFormData} />
-              {/* <ChannelMemberForm participants={participants} setParticipants={setParticipants} /> */}
-              <div className="flex justify-end gap-2">
-                {/* <button
-                  onClick={handleDeleteChannel}
-                  type="button"
-                  className="text mr-auto mt-2  rounded-lg bg-clrValentineRed px-4 py-1 text-sm text-clrPorcelain">
-                  Delete Channel
-                </button> */}
 
+              <div className="flex justify-end gap-2">
                 <button
+                  disabled={submitting}
                   onClick={closeModal}
                   type="reset"
-                  className="text mt-2 w-20 rounded-lg bg-clrBalticSea px-4 py-1 text-sm text-clrPorcelain">
+                  className="text mt-2 w-20 rounded-lg bg-clrBalticSea px-4 py-1 text-sm text-clrPorcelain disabled:cursor-not-allowed disabled:opacity-60">
                   cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || !isValid}
                   className={twMerge(
-                    `${submitting ? "bg-clrBalticSea" : "bg-clrClearBlue"}`,
-                    "text mt-2 w-20 rounded-lg  px-4 py-1 text-sm text-clrPorcelain"
+                    "text mt-2 w-20 rounded-lg bg-clrClearBlue  px-4 py-1 text-sm text-clrPorcelain disabled:cursor-not-allowed disabled:opacity-60"
                   )}>
-                  {submitting ? "updating..." : "update"}
+                  {submitting ? (
+                    <LoaderCircle className="mx-auto h-5 w-5 animate-spin" />
+                  ) : (
+                    "update"
+                  )}
                 </button>
               </div>
             </form>

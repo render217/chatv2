@@ -7,9 +7,12 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { api } from "../../api";
 import { useChat } from "../../context/ChatProvider";
+import { toast } from "react-toastify";
+import { LoaderCircle } from "lucide-react";
 /* eslint-disable react/prop-types */
 export function ChatItem({ message }) {
   const { user } = useAuth();
+  const [isDeleting, setIsDeleting] = useState(false);
   const { setMessages } = useChat();
   const [showDropDown, setShowDropDown] = useState(false);
 
@@ -28,8 +31,9 @@ export function ChatItem({ message }) {
   const handleDeleteMessage = async () => {
     await requestHandler({
       api: async () => await api.deleteMessage(message?.chat, message?._id),
-      setLoading: null,
+      setLoading: setIsDeleting,
       onSuccess: (payload) => {
+        toast.success("Message deleted");
         setMessages((prev) => prev.filter((c) => c._id !== payload._id));
       },
       onError: (errMsg) => {},
@@ -51,11 +55,15 @@ export function ChatItem({ message }) {
           </div>
           {showDropDown && isUser && (
             <div className="absolute bottom-14 ">
-              <FontAwesomeIcon
-                onClick={handleDeleteMessage}
-                className=" cursor-pointer text-clrValentineRed hover:scale-110"
-                icon={faTrashAlt}
-              />
+              {isDeleting ? (
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+              ) : (
+                <FontAwesomeIcon
+                  onClick={handleDeleteMessage}
+                  className=" cursor-pointer text-clrValentineRed hover:scale-110"
+                  icon={faTrashAlt}
+                />
+              )}
             </div>
           )}
           <div className="space-y-1">

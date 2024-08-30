@@ -95,7 +95,7 @@ export function ChannelMemberList({ participants, admin, isAdmin }) {
               className="cursor-pointer rounded-md border border-transparent px-3 duration-200 hover:border hover:border-clrShipGrey hover:bg-clrSmokyBlack/20"
               onClick={handleLeaveGroup}>
               <FontAwesomeIcon icon={faMinus} />
-              <button className="rounded-md  px-2 text-xs  ">Leave</button>
+              <button className="rounded-md  px-2 text-xs">Leave</button>
             </div>
           )}
           {isGroupChat && !isAdmin && !isUserMember && (

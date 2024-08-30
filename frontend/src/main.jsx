@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./context/AuthProvider.jsx";
 import SocketProvider from "./context/SocketProvider.jsx";
 import ChatProvider from "./context/ChatProvider.jsx";
+import "react-toastify/dist/ReactToastify.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>

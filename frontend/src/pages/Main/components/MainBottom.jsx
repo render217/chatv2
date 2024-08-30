@@ -8,6 +8,7 @@ import { requestHandler } from "../../../util";
 import { api } from "../../../api";
 import { useChat } from "../../../context/ChatProvider";
 import { useAuth } from "../../../context/AuthProvider";
+import { LoaderCircle } from "lucide-react";
 
 export const MainBottom = () => {
   const { user } = useAuth();
@@ -47,13 +48,20 @@ export const MainBottom = () => {
             className="flex rounded-xl  bg-clrShipGrey px-1 py-1">
             <input
               value={textMsg}
+              disabled={loading}
               onChange={(e) => setTextMsg(e.target.value)}
-              className="w-full bg-transparent  px-5 py-2 outline-none outline-offset-0"
+              className="w-full bg-transparent  px-5 py-2 outline-none outline-offset-0 disabled:cursor-not-allowed  disabled:opacity-30"
               type="text"
               placeholder="Type a message here"
             />
-            <button className="rounded-lg  bg-clrClearBlue px-4 hover:bg-clrClearBlue/90">
-              <FontAwesomeIcon icon={faPaperPlane} />
+            <button
+              disabled={loading}
+              className="w-[50px] rounded-lg bg-clrClearBlue  hover:bg-clrClearBlue/90 disabled:cursor-not-allowed disabled:bg-clrClearBlue/90 disabled:opacity-60">
+              {loading ? (
+                <LoaderCircle className="size-3 mx-auto animate-spin" />
+              ) : (
+                <FontAwesomeIcon icon={faPaperPlane} />
+              )}
             </button>
           </form>
         </div>

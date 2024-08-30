@@ -8,6 +8,8 @@ import useUIStore from "../../store/useUIStore";
 import { ChannelForm } from "./ChannelForm";
 import { ChannelMemberForm } from "./ChannelMemberForm";
 import { useChat } from "../../context/ChatProvider";
+import { toast } from "react-toastify";
+import { LoaderCircle } from "lucide-react";
 
 export default function AddChannel() {
   const { setChannels } = useChat();
@@ -20,9 +22,12 @@ export default function AddChannel() {
     description: "",
   });
 
+  const isValid = !formData.name || !formData.description;
+
   const handleAddChannelSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.description) {
+      toast.error("Please fill all fields");
       return;
     }
 
@@ -34,11 +39,14 @@ export default function AddChannel() {
         // console.log("Channel Added");
         // console.log({ newChanneL: payload });
         setChannels((prev) => [payload, ...prev]);
-        alert("Successfully created Channel");
+        toast.success("Successfully created Channel");
         closeModal();
       },
       onError: (errMsg) => {
         // console.log(errMsg);
+        if (errMsg) {
+          toast.error(errMsg);
+        }
       },
     });
     // console.log("Add Group Payload: ", { ...formData, participants: participants });
@@ -56,19 +64,19 @@ export default function AddChannel() {
               <ChannelMemberForm participants={participants} setParticipants={setParticipants} />
               <div className="flex justify-end gap-2">
                 <button
+                  disabled={submitting}
                   onClick={closeModal}
                   type="reset"
-                  className="text mt-2 w-20 rounded-lg bg-clrBalticSea px-4 py-1 text-sm text-clrPorcelain">
+                  className="text mt-2 grid w-20 place-content-center rounded-lg bg-clrBalticSea px-4 py-1 text-sm text-clrPorcelain disabled:cursor-not-allowed disabled:opacity-40">
                   cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || isValid}
                   className={twMerge(
-                    `${submitting ? "bg-clrBalticSea" : "bg-clrClearBlue"}`,
-                    "text mt-2 w-20 rounded-lg  px-4 py-1 text-sm text-clrPorcelain"
+                    " text mt-2 w-20 rounded-lg bg-clrClearBlue  px-4 py-1 text-sm text-clrPorcelain disabled:cursor-not-allowed disabled:opacity-40"
                   )}>
-                  {submitting ? "saving..." : "save"}
+                  {submitting ? <LoaderCircle className="mx-auto h-5 w-5 animate-spin" /> : "save"}
                 </button>
               </div>
             </form>

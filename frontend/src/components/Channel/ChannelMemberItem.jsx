@@ -9,12 +9,13 @@ import { api } from "../../api";
 import { requestHandler } from "../../util";
 import { useState } from "react";
 import { useChat } from "../../context/ChatProvider";
-
+import { LoaderCircle } from "lucide-react";
 /* eslint-disable react/prop-types */
 export function ChannelMemberItem({ participant, selectedParticipant, setSelectedParticipant }) {
   const { username } = participant;
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [toBeDeletedUser, setToBeDeletedUser] = useState(null);
   const openModal = useUIStore((state) => state.openModal);
   const isModalOpen = useUIStore((state) => state.isModalOpen);
   const { showUserProfile } = useUIStore((state) => state.modal_type);
@@ -26,14 +27,16 @@ export function ChannelMemberItem({ participant, selectedParticipant, setSelecte
   const isGroupChat = selectedChannel?.isGroupChat;
 
   const handleDelete = () => {
+    if (isDeleting) return;
     const response = confirm(`Are you sure you want to remove ${username}`);
     if (!response) {
       return;
     }
+    setToBeDeletedUser(username);
     requestHandler({
       api: async () =>
         await api.removeParticipantFromGroupChat(selectedChannel?._id, participant._id),
-      setLoading,
+      setLoading: setIsDeleting,
       onSuccess: (payload) => {
         // console.log("Participant Removed:");
         // console.log({ payload });
@@ -58,7 +61,11 @@ export function ChannelMemberItem({ participant, selectedParticipant, setSelecte
         <h3 className="overflow-ellipsis text-sm font-semibold text-clrFrenchGray">{chatName} </h3>
         {isGroupChat && isAdmin && (
           <div className="ml-auto mr-3 cursor-pointer px-2" onClick={handleDelete}>
-            <FontAwesomeIcon className="  text-clrValentineRed" icon={faTrashAlt} />
+            {toBeDeletedUser === username && isDeleting ? (
+              <LoaderCircle className="h-5 w-5 animate-spin" />
+            ) : (
+              <FontAwesomeIcon className="  text-clrValentineRed" icon={faTrashAlt} />
+            )}
           </div>
         )}
       </div>

@@ -1,4 +1,5 @@
 import moment from "moment";
+
 /**
  *
  * @param {async ()=>{}} api
@@ -12,7 +13,6 @@ export const requestHandler = async ({ api, setLoading, onSuccess, onError }) =>
     const { data } = await api();
     if (data?.success) {
       onSuccess(data.payload, data?.message);
-      // show some toast
     }
   } catch (error) {
     // console.log("ERROR (req.): ", error);

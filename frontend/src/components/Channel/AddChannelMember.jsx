@@ -8,6 +8,8 @@ import useChannelStore from "../../store/useChannelStore";
 import { requestHandler } from "../../util";
 import { api } from "../../api";
 import { useChat } from "../../context/ChatProvider";
+import { LoaderCircle } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function AddChannelMember() {
   const [submitting, setSubmitting] = useState(false);
@@ -32,11 +34,13 @@ export default function AddChannelMember() {
         // console.log("Participant Added: ");
         // console.log({ payload });
         setSelectedChannel(payload);
-        alert("Successfully added");
+        toast.success("Successfully Added Participants");
         closeModal();
       },
       onError: (errMsg) => {
-        // console.log(errMsg);
+        if (errMsg) {
+          toast.error(errMsg || "Something went wrong");
+        }
       },
     });
   };
@@ -56,18 +60,18 @@ export default function AddChannelMember() {
               <div className="flex justify-end gap-2">
                 <button
                   onClick={closeModal}
+                  disabled={submitting}
                   type="reset"
-                  className="text mt-2 w-20 rounded-lg bg-clrBalticSea px-4 py-1 text-sm text-clrPorcelain">
+                  className="text mt-2 w-20 rounded-lg bg-clrBalticSea px-4 py-1 text-sm text-clrPorcelain disabled:cursor-not-allowed disabled:opacity-60">
                   cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || participants.length === 0}
                   className={twMerge(
-                    `${submitting ? "bg-clrBalticSea" : "bg-clrClearBlue"}`,
-                    "text mt-2 w-20 rounded-lg  px-4 py-1 text-sm text-clrPorcelain"
+                    "text mt-2 w-20 rounded-lg bg-clrClearBlue  px-4 py-1 text-sm text-clrPorcelain disabled:cursor-not-allowed disabled:opacity-60"
                   )}>
-                  {submitting ? "adding..." : "add"}
+                  {submitting ? <LoaderCircle className="mx-auto h-5 w-5 animate-spin" /> : "add"}
                 </button>
               </div>
             </form>

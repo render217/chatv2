@@ -12,6 +12,9 @@ import { Modal } from "../Modal";
 import useClickOutside from "../../hooks/useClickOutside";
 import { useAuth } from "../../context/AuthProvider";
 import { api } from "../../api";
+import { requestHandler } from "../../util";
+import { toast } from "react-toastify";
+import { LoaderCircle } from "lucide-react";
 export function UserProfile() {
   const { logout, user, setUser } = useAuth();
   const isModalOpen = useUIStore((state) => state.isModalOpen);
@@ -20,10 +23,14 @@ export function UserProfile() {
 
   const [isProfileEdit, setIsProfileEdit] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     bio: "",
   });
+
+  const isValid = formData.username !== "";
+
   const handleInputChange = (name) => (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -41,20 +48,26 @@ export function UserProfile() {
 
   const onEditProfileSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await api.updateProfile({ username: formData.username, bio: formData.bio });
-
-      const { payload } = data;
-      setUser({
-        username: payload.user?.username,
-        bio: payload.user?.bio,
-        email: payload.user.email,
-        _id: payload.user._id,
-      });
-      setIsProfileEdit(false);
-    } catch (error) {
-      // console.log();
-    }
+    if (!isValid) return;
+    requestHandler({
+      api: async () => await api.updateProfile({ username: formData.username, bio: formData.bio }),
+      setLoading: setIsUpdating,
+      onSuccess: (payload) => {
+        setUser({
+          username: payload.user?.username,
+          bio: payload.user?.bio,
+          email: payload.user.email,
+          _id: payload.user._id,
+        });
+        toast.success("Successfully updated profile");
+        setIsProfileEdit(false);
+      },
+      onError: (errMsg) => {
+        if (errMsg) {
+          toast.error(errMsg);
+        }
+      },
+    });
   };
   const handleLogout = () => {
     logout();
@@ -111,27 +124,34 @@ export function UserProfile() {
                 <form className="" onSubmit={onEditProfileSubmit}>
                   <h3 className="mb-4 text-lg uppercase text-clrPorcelain">Edit My Profile</h3>
                   <input
-                    className="mb-4 w-full rounded-lg  bg-clrShipGrey px-4  py-2 text-clrPearlBush"
+                    className="mb-4 w-full rounded-lg bg-clrShipGrey  px-4 py-2  text-clrPearlBush disabled:opacity-60"
                     name="username"
                     type="text"
+                    disabled={isUpdating}
                     value={formData.username}
                     onChange={handleInputChange("username")}
                     placeholder="Enter new username"
                   />
                   <textarea
-                    className="w-full resize-none rounded-lg  bg-clrShipGrey px-4 py-2 text-clrPearlBush"
+                    className="w-full resize-none rounded-lg bg-clrShipGrey  px-4 py-2 text-clrPearlBush disabled:opacity-60"
                     name="bio"
                     id=""
                     cols="30"
                     rows="5"
+                    disabled={isUpdating}
                     value={formData.bio}
                     onChange={handleInputChange("bio")}
                     placeholder="Enter new bio"></textarea>
                   <div className="flex justify-end">
                     <button
+                      disabled={!isValid || isUpdating}
                       onClick={onEditProfileSubmit}
-                      className="mt-2 rounded-xl bg-clrClearBlue px-4 py-2 text-lg text-clrPorcelain">
-                      Save profile
+                      className="mt-2 h-8 w-[110px] rounded-xl bg-clrClearBlue text-clrPorcelain disabled:cursor-not-allowed disabled:opacity-60">
+                      {isUpdating ? (
+                        <LoaderCircle className="mx-auto h-5 w-5 animate-spin" />
+                      ) : (
+                        <p className="text-sm">Save profile</p>
+                      )}
                     </button>
                   </div>
                 </form>
