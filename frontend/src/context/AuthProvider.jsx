@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { api } from "../api";
 import { Loading } from "../components";
 import { requestHandler } from "../util";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const INITIAL_USER = {
   username: "",
   email: "",
@@ -25,6 +25,7 @@ const AuthContext = createContext(INITIAL_CONTEXT);
 
 export default function AuthProvider({ children }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(INITIAL_USER);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -63,6 +64,7 @@ export default function AuthProvider({ children }) {
       setUser(_user);
       setIsAuthenticated(true);
       navigate("/");
+      navigate({ pathname: location.pathname || "/" });
     } else {
       checkAuth();
     }
