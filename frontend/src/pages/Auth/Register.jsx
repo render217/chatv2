@@ -125,7 +125,7 @@ export const Register = () => {
 
                       <button
                         type="submit"
-                        disabled={!isSubmitting}
+                        disabled={isSubmitting}
                         className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-transparent bg-clrSmokyBlack/70 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-clrSmokyBlack/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:cursor-not-allowed disabled:bg-clrSmokyBlack/90 disabled:opacity-60">
                         {isSubmitting ? (
                           <LoaderCircle className="size-3 animate-spin" />
